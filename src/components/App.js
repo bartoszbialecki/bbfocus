@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 
+import Task from "./Task";
+
 import "./App.style.scss";
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <h1>BBFocus</h1>
-      </div>
+      <main className="app">
+        <Task />
+      </main>
     );
   }
 }
