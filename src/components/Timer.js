@@ -4,7 +4,7 @@ import "./Timer.style.scss";
 
 class Timer extends Component {
   render() {
-    return <h2 className="timer">24:34</h2>;
+    return <h2 className="timer">25:00</h2>;
   }
 }
 

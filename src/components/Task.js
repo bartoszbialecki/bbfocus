@@ -10,7 +10,7 @@ class Task extends Component {
     return (
       <>
         <section className="task">
-          <h1 className="task__name">Task to do</h1>
+          <h1 className="task__name">Enter task to do...</h1>
           <Timer />
           <ProgressBar />
         </section>
