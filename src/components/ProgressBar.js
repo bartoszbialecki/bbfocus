@@ -1,11 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 
 import "./ProgressBar.style.scss";
 
-class ProgressBar extends Component {
-  render() {
-    return <div className="progress-bar"></div>;
-  }
-}
+const ProgressBar = ({ percent = 100 }) => {
+  return (
+    <div className="progress-bar">
+      <div style={{ width: `${percent}%` }}></div>
+    </div>
+  );
+};
 
 export default ProgressBar;
