@@ -4,6 +4,8 @@ Simple React app helping you to be more productive using Pomodoro technique.
 
 Status: development in progress
 
+You can see it live at [https://bartoszbialecki.github.io/bbfocus/](https://bartoszbialecki.github.io/bbfocus/)
+
 ## How to use this project?
 
 - Clone this repository to your computer
