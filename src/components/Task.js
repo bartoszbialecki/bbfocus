@@ -17,6 +17,9 @@ class Task extends Component {
     };
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleStartPauseButtonClick = this.handleStartPauseButtonClick.bind(
+      this
+    );
   }
 
   handleTitleChange(event) {
@@ -25,7 +28,27 @@ class Task extends Component {
     });
   }
 
+  handleStartPauseButtonClick(event) {
+    this.setState((prevState) => {
+      let isRunning = prevState.isRunning;
+      let isPaused = prevState.isPaused;
+
+      if (!isRunning) {
+        isRunning = true;
+      } else {
+        isPaused = !isPaused;
+      }
+
+      return {
+        isRunning,
+        isPaused,
+      };
+    });
+  }
+
   render() {
+    const { task, isRunning, isPaused } = this.state;
+
     return (
       <>
         <section className="task">
@@ -33,7 +56,7 @@ class Task extends Component {
             textTagName="h1"
             textClassName="task__name"
             inputClassName="task__name-input"
-            text={this.state.task}
+            text={task}
             placeholder="Enter task to do..."
             handleTextChange={this.handleTitleChange}
           />
@@ -41,7 +64,12 @@ class Task extends Component {
           <ProgressBar />
         </section>
         <section className="timer-controls">
-          <button className="timer-button timer-button--play"></button>
+          <button
+            className={`timer-button timer-button--${
+              isRunning && !isPaused ? "pause" : "play"
+            }`}
+            onClick={this.handleStartPauseButtonClick}
+          ></button>
           <div className="timer-cancel-button-container hidden">
             <button className="timer-cancel-button"></button>
           </div>

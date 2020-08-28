@@ -56,6 +56,7 @@ $buttonRatio: 1.2;
   cursor: pointer;
   display: inline-block;
   height: $buttonSize;
+  outline: none;
   width: $buttonSize;
   transition: all 100ms ease-in-out;
 
