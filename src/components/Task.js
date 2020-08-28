@@ -102,7 +102,7 @@ class Task extends Component {
     const minutesLeft = Math.floor(timeLeftInSeconds / 60);
     const secondsLeft = Math.floor(timeLeftInSeconds % 60);
     const progressInPercent =
-      100 - (elapsedTimeInSeconds / totalTimeInSeconds) * 100.0;
+      (elapsedTimeInSeconds / totalTimeInSeconds) * 100.0;
 
     return (
       <>
