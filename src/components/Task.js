@@ -14,6 +14,8 @@ class Task extends Component {
       isRunning: false,
       isPaused: false,
       task: null,
+      totalTimeInSeconds: 25 * 60,
+      elapsedTimeInSeconds: 0,
     };
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -30,32 +32,74 @@ class Task extends Component {
   }
 
   handleStartPauseButtonClick(event) {
-    this.setState((prevState) => {
-      let isRunning = prevState.isRunning;
-      let isPaused = prevState.isPaused;
+    if (!this.state.isRunning) {
+      this.setState({
+        isRunning: true,
+      });
 
-      if (!isRunning) {
-        isRunning = true;
-      } else {
-        isPaused = !isPaused;
-      }
+      this.startTimer();
+    } else {
+      this.setState((prevState) => {
+        let isPaused = !prevState.isPaused;
 
-      return {
-        isRunning,
-        isPaused,
-      };
-    });
+        if (isPaused) {
+          this.stopTimer();
+        } else {
+          this.startTimer();
+        }
+
+        return {
+          isPaused,
+        };
+      });
+    }
   }
 
   handleStop(event) {
     this.setState({
       isRunning: false,
       isPaused: false,
+      elapsedTimeInSeconds: 0,
     });
+
+    this.stopTimer();
+  }
+
+  startTimer() {
+    this.intervalId = window.setInterval(() => {
+      this.setState((prevState) => {
+        let elapsedTimeInSeconds = prevState.elapsedTimeInSeconds + 0.1;
+
+        if (elapsedTimeInSeconds >= prevState.totalTimeInSeconds) {
+          elapsedTimeInSeconds = 0;
+          this.handleStop(null);
+        }
+
+        return {
+          elapsedTimeInSeconds,
+        };
+      });
+    }, 100);
+  }
+
+  stopTimer() {
+    window.clearInterval(this.intervalId);
   }
 
   render() {
-    const { task, isRunning, isPaused } = this.state;
+    const {
+      task,
+      isRunning,
+      isPaused,
+      totalTimeInSeconds,
+      elapsedTimeInSeconds,
+    } = this.state;
+
+    const timeLeftInSeconds = totalTimeInSeconds - elapsedTimeInSeconds;
+    const minutesLeft = Math.floor(timeLeftInSeconds / 60);
+    const secondsLeft = Math.floor(timeLeftInSeconds % 60);
+    const progressInPercent =
+      100 - (elapsedTimeInSeconds / totalTimeInSeconds) * 100.0;
 
     return (
       <>
@@ -68,8 +112,8 @@ class Task extends Component {
             placeholder="Enter task to do..."
             handleTextChange={this.handleTitleChange}
           />
-          <Timer />
-          <ProgressBar />
+          <Timer minutes={minutesLeft} seconds={secondsLeft} />
+          <ProgressBar percent={progressInPercent} />
         </section>
         <section className="timer-controls">
           <button
