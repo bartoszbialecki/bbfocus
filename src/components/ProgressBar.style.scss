@@ -6,6 +6,11 @@
     background-color: var(--primary-color);
     border-radius: 0.5rem;
     height: 1rem;
-    width: 100%;
+  }
+
+  &--right-positioned {
+    > div {
+      float: right;
+    }
   }
 }

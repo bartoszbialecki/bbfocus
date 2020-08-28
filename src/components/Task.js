@@ -69,13 +69,16 @@ class Task extends Component {
     this.intervalId = window.setInterval(() => {
       this.setState((prevState) => {
         let elapsedTimeInSeconds = prevState.elapsedTimeInSeconds + 0.1;
+        let isRunning = prevState.isRunning;
 
         if (elapsedTimeInSeconds >= prevState.totalTimeInSeconds) {
           elapsedTimeInSeconds = 0;
-          this.handleStop(null);
+          isRunning = false;
+          this.stopTimer();
         }
 
         return {
+          isRunning,
           elapsedTimeInSeconds,
         };
       });
