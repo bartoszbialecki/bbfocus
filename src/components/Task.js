@@ -20,6 +20,7 @@ class Task extends Component {
     this.handleStartPauseButtonClick = this.handleStartPauseButtonClick.bind(
       this
     );
+    this.handleStop = this.handleStop.bind(this);
   }
 
   handleTitleChange(event) {
@@ -43,6 +44,13 @@ class Task extends Component {
         isRunning,
         isPaused,
       };
+    });
+  }
+
+  handleStop(event) {
+    this.setState({
+      isRunning: false,
+      isPaused: false,
     });
   }
 
@@ -70,8 +78,15 @@ class Task extends Component {
             }`}
             onClick={this.handleStartPauseButtonClick}
           ></button>
-          <div className="timer-cancel-button-container hidden">
-            <button className="timer-cancel-button"></button>
+          <div
+            className={`timer-cancel-button-container${
+              !isRunning ? " hidden" : ""
+            }`}
+          >
+            <button
+              className="timer-cancel-button"
+              onClick={this.handleStop}
+            ></button>
           </div>
         </section>
       </>
