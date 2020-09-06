@@ -14,8 +14,9 @@ class Task extends Component {
       isRunning: false,
       isPaused: false,
       task: null,
-      totalTimeInSeconds: 25 * 60,
-      elapsedTimeInSeconds: 0,
+      totalTimeInMilliseconds: 25 * 60 * 1000,
+      elapsedTimeInMilliseconds: 0,
+      startTime: 0,
     };
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -35,21 +36,25 @@ class Task extends Component {
     if (!this.state.isRunning) {
       this.setState({
         isRunning: true,
+        startTime: Date.now(),
       });
 
       this.startTimer();
     } else {
       this.setState((prevState) => {
         let isPaused = !prevState.isPaused;
+        let startTime = prevState.startTime;
 
         if (isPaused) {
           this.stopTimer();
         } else {
+          startTime = Date.now() - prevState.elapsedTimeInMilliseconds;
           this.startTimer();
         }
 
         return {
           isPaused,
+          startTime,
         };
       });
     }
@@ -59,7 +64,7 @@ class Task extends Component {
     this.setState({
       isRunning: false,
       isPaused: false,
-      elapsedTimeInSeconds: 0,
+      elapsedTimeInMilliseconds: 0,
     });
 
     this.stopTimer();
@@ -68,21 +73,21 @@ class Task extends Component {
   startTimer() {
     this.intervalId = window.setInterval(() => {
       this.setState((prevState) => {
-        let elapsedTimeInSeconds = prevState.elapsedTimeInSeconds + 0.1;
+        let elapsedTimeInMilliseconds = Date.now() - prevState.startTime;
         let isRunning = prevState.isRunning;
 
-        if (elapsedTimeInSeconds >= prevState.totalTimeInSeconds) {
-          elapsedTimeInSeconds = 0;
+        if (elapsedTimeInMilliseconds >= prevState.totalTimeInMilliseconds) {
+          elapsedTimeInMilliseconds = 0;
           isRunning = false;
           this.stopTimer();
         }
 
         return {
           isRunning,
-          elapsedTimeInSeconds,
+          elapsedTimeInMilliseconds,
         };
       });
-    }, 100);
+    }, 10);
   }
 
   stopTimer() {
@@ -94,15 +99,16 @@ class Task extends Component {
       task,
       isRunning,
       isPaused,
-      totalTimeInSeconds,
-      elapsedTimeInSeconds,
+      totalTimeInMilliseconds,
+      elapsedTimeInMilliseconds,
     } = this.state;
 
-    const timeLeftInSeconds = totalTimeInSeconds - elapsedTimeInSeconds;
-    const minutesLeft = Math.floor(timeLeftInSeconds / 60);
-    const secondsLeft = Math.floor(timeLeftInSeconds % 60);
+    const timeLeftInMilliseconds =
+      totalTimeInMilliseconds - elapsedTimeInMilliseconds;
+    const minutesLeft = Math.floor(timeLeftInMilliseconds / 1000 / 60);
+    const secondsLeft = Math.floor((timeLeftInMilliseconds / 1000) % 60);
     const progressInPercent =
-      (elapsedTimeInSeconds / totalTimeInSeconds) * 100.0;
+      (elapsedTimeInMilliseconds / totalTimeInMilliseconds) * 100.0;
 
     return (
       <>
