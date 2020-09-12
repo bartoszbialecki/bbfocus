@@ -19,6 +19,8 @@ class Task extends Component {
       startTime: 0,
     };
 
+    this.intervalId = null;
+
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleStartPauseButtonClick = this.handleStartPauseButtonClick.bind(
       this
@@ -75,6 +77,10 @@ class Task extends Component {
   }
 
   startTimer() {
+    if (this.intervalId !== null) {
+      return;
+    }
+
     this.intervalId = window.setInterval(() => {
       this.setState((prevState) => {
         let elapsedTimeInMilliseconds = Date.now() - prevState.startTime;
@@ -96,6 +102,7 @@ class Task extends Component {
 
   stopTimer() {
     window.clearInterval(this.intervalId);
+    this.intervalId = null;
   }
 
   render() {
@@ -116,36 +123,38 @@ class Task extends Component {
 
     return (
       <>
-        <section className="task">
-          <EditableText
-            textTagName="h1"
-            textClassName="task__name"
-            inputClassName="task__name-input"
-            text={task}
-            placeholder="Enter task to do..."
-            handleTextChange={this.handleTitleChange}
-          />
-          <Timer minutes={minutesLeft} seconds={secondsLeft} />
-          <ProgressBar percent={progressInPercent} />
-        </section>
-        <section className="timer-controls">
-          <button
-            className={`timer-button timer-button--${
-              isRunning && !isPaused ? "pause" : "play"
-            }`}
-            onClick={this.handleStartPauseButtonClick}
-          ></button>
-          <div
-            className={`timer-cancel-button-container${
-              !isRunning ? " hidden" : ""
-            }`}
-          >
+        <React.StrictMode>
+          <section className="task">
+            <EditableText
+              textTagName="h1"
+              textClassName="task__name"
+              inputClassName="task__name-input"
+              text={task}
+              placeholder="Enter task to do..."
+              handleTextChange={this.handleTitleChange}
+            />
+            <Timer minutes={minutesLeft} seconds={secondsLeft} />
+            <ProgressBar percent={progressInPercent} />
+          </section>
+          <section className="timer-controls">
             <button
-              className="timer-cancel-button"
-              onClick={this.handleStop}
+              className={`timer-button timer-button--${
+                isRunning && !isPaused ? "pause" : "play"
+              }`}
+              onClick={this.handleStartPauseButtonClick}
             ></button>
-          </div>
-        </section>
+            <div
+              className={`timer-cancel-button-container${
+                !isRunning ? " hidden" : ""
+              }`}
+            >
+              <button
+                className="timer-cancel-button"
+                onClick={this.handleStop}
+              ></button>
+            </div>
+          </section>
+        </React.StrictMode>
       </>
     );
   }
