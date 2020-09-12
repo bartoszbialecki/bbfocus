@@ -26,6 +26,10 @@ class Task extends Component {
     this.handleStop = this.handleStop.bind(this);
   }
 
+  componentWillUnmount() {
+    this.stopTimer();
+  }
+
   handleTitleChange(event) {
     this.setState({
       task: event.target.value,
