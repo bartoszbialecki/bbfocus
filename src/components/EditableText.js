@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
 
 const EditableText = ({
   textTagName,
@@ -61,6 +62,15 @@ const EditableText = ({
       )}
     </section>
   );
+};
+
+EditableText.propTypes = {
+  textTagName: PropTypes.string,
+  textClassName: PropTypes.string,
+  inputClassName: PropTypes.string,
+  text: PropTypes.string,
+  placeholder: PropTypes.string,
+  handleTextChange: PropTypes.func,
 };
 
 export default EditableText;

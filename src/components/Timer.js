@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
 import "./Timer.style.scss";
 
@@ -40,12 +41,12 @@ const normalizeMilliseconds = (value) => {
 const normalizeSeconds = (seconds) => {};
 
 const Timer = ({
-  hours = 0,
-  minutes = 25,
-  seconds = 0,
-  milliseconds = 0,
-  showHours = false,
-  showMilliseconds = false,
+  hours,
+  minutes,
+  seconds,
+  milliseconds,
+  showHours,
+  showMilliseconds,
 }) => {
   return (
     <h2 className="timer">
@@ -54,6 +55,22 @@ const Timer = ({
       {showMilliseconds && "." + normalizeMilliseconds(milliseconds)}
     </h2>
   );
+};
+
+Timer.defaultProps = {
+  hours: 0,
+  milliseconds: 0,
+  showHours: false,
+  showMilliseconds: false,
+};
+
+Timer.propTypes = {
+  hours: PropTypes.number,
+  minutes: PropTypes.number.isRequired,
+  seconds: PropTypes.number.isRequired,
+  milliseconds: PropTypes.number,
+  showHours: PropTypes.bool,
+  showMilliseconds: PropTypes.bool,
 };
 
 export default Timer;
